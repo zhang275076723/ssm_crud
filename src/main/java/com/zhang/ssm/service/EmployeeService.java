@@ -11,4 +11,8 @@ import java.util.List;
  */
 public interface EmployeeService {
     List<Employee> getAll();
+
+    void insertEmployee(Employee employee);
+
+    boolean checkEmpName(String empName);
 }

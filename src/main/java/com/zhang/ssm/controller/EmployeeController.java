@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -48,4 +49,23 @@ public class EmployeeController {
         return Msg.success().add("pageInfo", pageInfo);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/saveEmployee", method = RequestMethod.POST)
+    public Msg saveEmployee(Employee employee) {
+        employeeService.insertEmployee(employee);
+        return Msg.success();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/checkEmpName", method = RequestMethod.POST)
+    public Msg checkEmpName(@RequestParam("empName") String empName) {
+        String reg = "/(^[A-Za-z0-9_\\u4e00-\\u9fa5]{6,16}$)/";
+        if (empName.matches(reg)) {
+
+        }
+        if (employeeService.checkEmpName(empName)) {
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
 }

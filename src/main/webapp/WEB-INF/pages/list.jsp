@@ -7,9 +7,10 @@
 <head>
     <meta charset="UTF-8">
     <title>员工列表</title>
-    <link href="${cpt}/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="${cpt}static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <!--jQuery要放在Bootstrap之前-->
     <script type="text/javascript" src="${cpt}/static/js/jquery-3.1.1.js"></script>
+    <link href="${cpt}/static/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${cpt}/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">

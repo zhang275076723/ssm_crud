@@ -119,6 +119,7 @@
     <include refid="WithDept_Column_List" />
     from tbl_emp e
     left join tbl_dept d on e.d_id = d.dept_id
+    order by e.emp_id asc
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
