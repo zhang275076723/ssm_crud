@@ -141,6 +141,13 @@
       <version>2.10.0</version>
     </dependency>
 
+    <!--JSR303，Tomcat7以下的服务器需要导包，替新的标准el表达式-->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.0.17.Final</version>
+    </dependency>
+
   </dependencies>
 
   <build>

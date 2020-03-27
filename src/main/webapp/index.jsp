@@ -153,15 +153,17 @@
             $("#empName_input").parent().removeClass("has-error");
 
             if (empName == "") {
-                $("#empName_input").parent().addClass("has-error");
-                $("#empName_input").next("span").append("empName不能为空");
+                show_validate_msg("#empName_input", "empName不能为空");
+                // $("#empName_input").parent().addClass("has-error");
+                // $("#empName_input").next("span").append("empName不能为空");
                 $("#emp_save_btn").attr("empName_flag","0");
                 return;
             }
 
             if (!regName.test(empName)) {
-                $("#empName_input").parent().addClass("has-error");
-                $("#empName_input").next("span").append("empName格式错误，必须是6-16位的汉字、英文、数字、下划线");
+                show_validate_msg("#empName_input", "empName格式错误，必须是6-16位的汉字、英文、数字、下划线");
+                // $("#empName_input").parent().addClass("has-error");
+                // $("#empName_input").next("span").append("empName格式错误，必须是6-16位的汉字、英文、数字、下划线");
                 $("#emp_save_btn").attr("empName_flag","0");
                 return;
             }
@@ -176,8 +178,9 @@
                     }
 
                     if (result.code == 200) {
-                        $("#empName_input").parent().addClass("has-error");
-                        $("#empName_input").next("span").append("empName已存在");
+                        show_validate_msg("#empName_input", "empName已存在");
+                        // $("#empName_input").parent().addClass("has-error");
+                        // $("#empName_input").next("span").append("empName已存在");
                         $("#emp_save_btn").attr("empName_flag","0");
                     }
                 },
@@ -199,15 +202,17 @@
             $("#email_input").parent().removeClass("has-error");
 
             if (email == "") {
-                $("#email_input").parent().addClass("has-error");
-                $("#email_input").next("span").append("email不能为空");
+                show_validate_msg("#email_input", "email不能为空");
+                // $("#email_input").parent().addClass("has-error");
+                // $("#email_input").next("span").append("email不能为空");
                 $("#emp_save_btn").attr("email_flag","0");
                 return;
             }
 
             if (!regEmail.test(email)) {
-                $("#email_input").parent().addClass("has-error");
-                $("#email_input").next("span").append("email格式错误");
+                show_validate_msg("#email_input", "email格式错误");
+                // $("#email_input").parent().addClass("has-error");
+                // $("#email_input").next("span").append("email格式错误");
                 $("#emp_save_btn").attr("email_flag","0");
                 return;
             }
@@ -228,14 +233,19 @@
                 data: $("#empAddModal form").serialize(),
                 type: "POST",
                 success: function (result) {
-                    if(result.code == 100){
+                    if (result.code == 100) {
                         //关闭模态框
                         $("#empAddModal").modal('hide');
                         //跳转到最后一页，显示新添加的员工
                         pageChange(totalPages);
                     }
-                    if(result.code == 200){
-                        alert("添加员工失败");
+                    if (result.code == 200) {
+                        if (result.extend.errorInfo.empName != undefined) {
+                            show_validate_msg("#empName_input", result.extend.errorInfo.empName);
+                        }
+                        if (result.extend.errorInfo.email != undefined) {
+                            show_validate_msg("#email_input", result.extend.errorInfo.email);
+                        }
                     }
                 },
                 error: function () {
@@ -374,6 +384,7 @@
 
         /**
          * 发送ajax请求，查询部门信息，并显示在模态框中
+         * @param selectId 下拉框select元素
          */
         function getDepartments(selectId) {
             //清空
@@ -398,8 +409,24 @@
         }
 
         /**
+         * 显示校验提示信息
+         * @param ele 输入框元素
+         * @param msg 校验信息
+         */
+        function show_validate_msg(ele, msg) {
+            //清空提示信息
+            $(ele).next("span").empty();
+
+            //清除错误红框
+            $(ele).parent().removeClass("has-error");
+
+            $(ele).parent().addClass("has-error");
+            $(ele).next("span").append(msg);
+        }
+
+        /**
          * 重置表单
-         * @param ele
+         * @param ele 表单元素
          */
         function reset_form(ele) {
             //清空表单数据
@@ -415,6 +442,7 @@
             //清除错误红框
             $(ele).find("*").removeClass("has-error");
         }
+
 
     </script>
 </body>

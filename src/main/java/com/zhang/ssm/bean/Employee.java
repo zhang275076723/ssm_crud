@@ -4,16 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
     private Integer empId;
 
+    @Pattern(regexp = "(^[A-Za-z0-9_\\u4e00-\\u9fa5]{6,16}$)",
+            message = "empName格式错误，必须是6-16位的汉字、英文、数字、下划线")
     private String empName;
 
     private String gender;
 
+    @Email(regexp = "^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.]{2,6})$",
+            message = "email格式错误达")
     private String email;
 
     private Integer dId;

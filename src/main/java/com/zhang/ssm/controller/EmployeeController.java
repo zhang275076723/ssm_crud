@@ -8,12 +8,17 @@ import com.zhang.ssm.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author zsy
@@ -51,7 +56,16 @@ public class EmployeeController {
 
     @ResponseBody
     @RequestMapping(value = "/saveEmployee", method = RequestMethod.POST)
-    public Msg saveEmployee(Employee employee) {
+    public Msg saveEmployee(@Valid Employee employee, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, Object> errorInfo = new HashMap<>();
+            List<FieldError> errors = result.getFieldErrors();
+            for (FieldError error : errors) {
+                //将错误信息封装到map中
+                errorInfo.put(error.getField(), error.getDefaultMessage());
+            }
+            return Msg.fail().add("errorInfo", errorInfo);
+        }
         employeeService.insertEmployee(employee);
         return Msg.success();
     }
