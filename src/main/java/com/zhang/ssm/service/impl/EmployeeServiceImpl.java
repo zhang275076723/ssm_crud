@@ -25,15 +25,35 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void insertEmployee(Employee employee) {
-        employeeMapper.insertSelective(employee);
-    }
-
-    @Override
     public boolean checkEmpName(String empName) {
         EmployeeExample example = new EmployeeExample();
         example.createCriteria().andEmpNameEqualTo(empName);
         long count = employeeMapper.countByExample(example);
         return count == 0;
+    }
+
+    @Override
+    public void insertEmployee(Employee employee) {
+        employeeMapper.insertSelective(employee);
+    }
+
+    @Override
+    public Employee getEmployee(Integer id) {
+        return employeeMapper.selectByPrimaryKeyWithDept(id);
+    }
+
+    @Override
+    public boolean updateEmployee(Employee employee) {
+        return employeeMapper.updateByPrimaryKeySelective(employee) == 1;
+    }
+
+    @Override
+    public boolean deleteEmployee(Integer id) {
+        return employeeMapper.deleteByPrimaryKey(id) == 1;
+    }
+
+    @Override
+    public boolean batchDeleteEmployee(List<Integer> ids) {
+        return employeeMapper.batchDelete(ids) == ids.size();
     }
 }

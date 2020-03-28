@@ -10,15 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author zsy
@@ -30,6 +25,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+    //list.jsp
     @RequestMapping("/getEmployees")
     public String getEmployees(@RequestParam(value = "pn", defaultValue = "1") Integer pn, Model model) {
         //页码，每页大小
@@ -55,7 +51,16 @@ public class EmployeeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/saveEmployee", method = RequestMethod.POST)
+    @RequestMapping("/checkEmpName")
+    public Msg checkEmpName(@RequestParam("empName") String empName) {
+        if (employeeService.checkEmpName(empName)) {
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/employee", method = RequestMethod.POST)
     public Msg saveEmployee(@Valid Employee employee, BindingResult result) {
         if (result.hasErrors()) {
             Map<String, Object> errorInfo = new HashMap<>();
@@ -71,13 +76,34 @@ public class EmployeeController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/checkEmpName", method = RequestMethod.POST)
-    public Msg checkEmpName(@RequestParam("empName") String empName) {
-        String reg = "/(^[A-Za-z0-9_\\u4e00-\\u9fa5]{6,16}$)/";
-        if (empName.matches(reg)) {
+    @RequestMapping(value = "/employee/{empId}", method = RequestMethod.GET)
+    public Msg getEmployee(@PathVariable("empId") Integer id) {
+        return Msg.success().add("employee", employeeService.getEmployee(id));
+    }
 
+    @ResponseBody
+    @RequestMapping(value = "/employee", method = RequestMethod.PUT)
+    public Msg updateEmployee(Employee employee) {
+        if (employeeService.updateEmployee(employee)) {
+            return Msg.success();
         }
-        if (employeeService.checkEmpName(empName)) {
+        return Msg.fail();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/employee", method = RequestMethod.DELETE)
+    public Msg deleteEmployee(@RequestParam("empId") Integer id) {
+        if (employeeService.deleteEmployee(id)) {
+            return Msg.success();
+        }
+        return Msg.fail();
+    }
+
+    @ResponseBody
+    @RequestMapping("/batchDelete")
+    public Msg batchDelete(@RequestParam("empIds") Integer[] ids) {
+        List<Integer> list = new ArrayList<>(Arrays.asList(ids));
+        if (employeeService.batchDeleteEmployee(list)) {
             return Msg.success();
         }
         return Msg.fail();

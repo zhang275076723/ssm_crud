@@ -10,5 +10,6 @@ import java.util.List;
  * @Description
  */
 public interface DepartmentService {
+    //获取所有department
     List<Department> getAll();
 }

@@ -41,13 +41,14 @@ public class MapperTest {
 //        departmentMapper.insertSelective(new Department(null, "测试部"));
 //        employeeMapper.insertSelective(new Employee(null, "Tom", "1", "zhang@foxmail.com", 1));
 
-//        SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) ioc.getBean("sqlSessionFactory");
-//        SqlSession sqlSession = sqlSessionFactory.openSession();
-//        EmployeeMapper employeeMapper = sqlSession.getMapper(EmployeeMapper.class);
+        SqlSessionFactory sqlSessionFactory = (SqlSessionFactory) ioc.getBean("sqlSessionFactory");
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        EmployeeMapper employeeMapper = sqlSession.getMapper(EmployeeMapper.class);
 //        for (int i = 1; i <= 100; i++) {
 //            String str = UUID.randomUUID().toString().substring(0, 5) + i;
 //            employeeMapper.insertSelective(new Employee(null, str, "1", str + "@foxmail.com", 1));
 //        }
-//        sqlSession.close();
+        System.out.println(employeeMapper.selectByPrimaryKeyWithDept(1));
+        sqlSession.close();
     }
 }

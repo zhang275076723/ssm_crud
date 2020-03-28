@@ -31,4 +31,7 @@ public interface EmployeeMapper {
     int updateByPrimaryKeySelective(Employee record);
 
     int updateByPrimaryKey(Employee record);
+
+    //批量删除
+    int batchDelete(@Param("ids") List<Integer> ids);
 }

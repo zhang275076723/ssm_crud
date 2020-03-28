@@ -1,5 +1,6 @@
 package com.zhang.ssm.bean;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,8 @@ public class Employee {
             message = "email格式错误达")
     private String email;
 
+    //防止传输json的大小写问题
+    @JsonProperty("dId")
     private Integer dId;
 
     private Department department;
